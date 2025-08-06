@@ -10,11 +10,18 @@ struct PokemonResult: Codable {
     let count: Int
     let next: String
     let previous: JSONNull?
-    let results: [PokemonListItem]
+    let results: [PokemonResults]
 }
 
 // MARK: - Result
-struct PokemonListItem: Codable {
+struct PokemonResults: Codable {
     let name: String
     let url: String
 }
+
+struct PokemonResultsWithID: Codable {
+    let name: String
+    let url: String
+    let id: Int
+}
+

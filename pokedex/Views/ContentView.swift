@@ -12,28 +12,22 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottomTrailing) {
-//                Image("pokeball")
-//                    .offset(x: 60, y: 250.0)
+            ZStack(alignment: .center) {
+                Color.red.ignoresSafeArea(.all)
+                Image("pokeball")
+                    .offset(x: 80, y: 300)
+                
                 if viewModel.isLoading {
                     ProgressView("Loading")
+                } else if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .padding()
                 } else {
-                    List {
-                        ForEach(viewModel.result?.results ?? [], id: \.name) {item in
-                            NavigationLink(destination: {
-                                PokemonDetailsView(url: item.url, name: item.name)
-                            }, label: {
-                                ListItem(name: item.name)
-                            })
-                        }
-                    }
-                    .listStyle(.plain)
+                    PokemonList(pokemonList: viewModel.result?.results ?? [])
                 }
-
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.red)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             Task {
                 await viewModel.fetchPokemonList()
