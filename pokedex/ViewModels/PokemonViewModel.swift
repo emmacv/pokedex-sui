@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 class PokemonViewModel: ObservableObject {
-    @Published var result: Pokemon?
+    @Published var result: Pokemon2?
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
 

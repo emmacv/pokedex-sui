@@ -5,6 +5,12 @@
 
 import Foundation
 
+struct Pokemon2: Codable {
+    let height: Int
+    let id: Int
+    let name: String
+}
+
 // MARK: - Welcome
 struct Pokemon: Codable {
     let abilities: [Ability]
@@ -173,13 +179,13 @@ struct Other: Codable {
 // MARK: - Sprites
 class Sprites: Codable {
     let backDefault: String
-    let backFemale: JSONNull?
+    let backFemale: String?
     let backShiny: String
-    let backShinyFemale: JSONNull?
+    let backShinyFemale: String?
     let frontDefault: String
-    let frontFemale: JSONNull?
+    let frontFemale: String?
     let frontShiny: String
-    let frontShinyFemale: JSONNull?
+    let frontShinyFemale: String?
     let other: Other?
     let versions: Versions?
     let animated: Sprites?
@@ -196,7 +202,7 @@ class Sprites: Codable {
         case other, versions, animated
     }
 
-    init(backDefault: String, backFemale: JSONNull?, backShiny: String, backShinyFemale: JSONNull?, frontDefault: String, frontFemale: JSONNull?, frontShiny: String, frontShinyFemale: JSONNull?, other: Other?, versions: Versions?, animated: Sprites?) {
+    init(backDefault: String, backFemale: String?, backShiny: String, backShinyFemale: String?, frontDefault: String, frontFemale: String?, frontShiny: String, frontShinyFemale: String?, other: Other?, versions: Versions?, animated: Sprites?) {
         self.backDefault = backDefault
         self.backFemale = backFemale
         self.backShiny = backShiny
@@ -324,7 +330,7 @@ struct GenerationVii: Codable {
 // MARK: - DreamWorld
 struct DreamWorld: Codable {
     let frontDefault: String
-    let frontFemale: JSONNull?
+    let frontFemale: String?
 
     enum CodingKeys: String, CodingKey {
         case frontDefault = "front_default"
