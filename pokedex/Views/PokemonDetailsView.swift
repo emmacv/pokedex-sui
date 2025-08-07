@@ -65,13 +65,11 @@ struct PokemonDetailsView: View {
                     VStack(alignment: .leading) {
                         Text("Stats")
                         Chart {
-                            ForEach(viewModel.result?.stats ?? [], id: \.baseStat) {
-                                SectorMark(
-                                    angle: .value($0.stat.name, 8),
-                                    innerRadius: .ratio(stat($0)),
-                                    angularInset: 2
-                                )
-                            }
+                            SectorMark(
+                                angle: .value("$0.stat.name", 8),
+                                innerRadius: .ratio(7),
+                                angularInset: 2
+                            )
                         }
                     }
                     Spacer()
