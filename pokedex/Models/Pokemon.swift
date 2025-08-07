@@ -11,6 +11,7 @@ struct Pokemon2: Codable {
     let name: String
     let abilities: [Ability]
     let stats: [Stat]
+    let sprites: [String]
 }
 
 // MARK: - Welcome
@@ -21,7 +22,7 @@ struct Pokemon: Codable {
     let forms: [Species]
     let gameIndices: [GameIndex]
     let height: Int
-    let heldItems: [JSONAny]
+//    let heldItems: [JSONAny]
     let id: Int
     let isDefault: Bool
     let locationAreaEncounters: String
@@ -29,7 +30,7 @@ struct Pokemon: Codable {
     let name: String
     let order: Int
     let pastAbilities: [PastAbility]
-    let pastTypes: [JSONAny]
+//    let pastTypes: [JSONAny]
     let species: Species
     let sprites: Sprites
     let stats: [Stat]
@@ -42,13 +43,13 @@ struct Pokemon: Codable {
         case cries, forms
         case gameIndices = "game_indices"
         case height
-        case heldItems = "held_items"
+//        case heldItems = "held_items"
         case id
         case isDefault = "is_default"
         case locationAreaEncounters = "location_area_encounters"
         case moves, name, order
         case pastAbilities = "past_abilities"
-        case pastTypes = "past_types"
+//        case pastTypes = "past_types"
         case species, sprites, stats, types, weight
     }
 }
@@ -306,9 +307,9 @@ struct OfficialArtwork: Codable {
 // MARK: - Home
 struct Home: Codable {
     let frontDefault: String
-    let frontFemale: JSONNull?
+    let frontFemale: String?
     let frontShiny: String
-    let frontShinyFemale: JSONNull?
+    let frontShinyFemale: String?
 
     enum CodingKeys: String, CodingKey {
         case frontDefault = "front_default"

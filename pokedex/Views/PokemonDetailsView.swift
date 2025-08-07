@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Charts
 
 struct PokemonDetailsView: View {
     @StateObject var viewModel: PokemonViewModel = .init()
@@ -32,7 +33,7 @@ struct PokemonDetailsView: View {
             } else if viewModel.errorMessage != nil {
                 Text(viewModel.errorMessage!)
             } else {
-                VStack(alignment: .center) {
+                VStack(alignment: .center, spacing: 16) {
                     ZStack {
                         Image("pokeball")
                             .resizable()
@@ -48,6 +49,31 @@ struct PokemonDetailsView: View {
                         .bold()
                         .font(.title2)
                         .frame(maxWidth: .infinity, alignment: .center)
+                    VStack(alignment: .leading) {
+                        Text("Sprites")
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 16) {
+                                ForEach(viewModel.result?.sprites ?? [], id: \.self) {
+                                    WebImage(url: URL(string: $0))
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(maxWidth: 128, maxHeight: 128)
+                                }
+                            }
+                        }
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Stats")
+                        Chart {
+                            ForEach(viewModel.result?.stats ?? [], id: \.baseStat) {
+                                SectorMark(
+                                    angle: .value($0.stat.name, 8),
+                                    innerRadius: .ratio(stat($0)),
+                                    angularInset: 2
+                                )
+                            }
+                        }
+                    }
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -58,7 +84,12 @@ struct PokemonDetailsView: View {
         .background(Color.red)
         .task {
             await viewModel.fetchPokemonDetails(url: url)
-            print("\(viewModel.result?.abilities)")
+            print(viewModel.result?.stats[0].baseStat ?? 0)
         }
     }
+}
+
+func stat(_ stat: Stat) -> Int{
+    print(stat)
+    return 8
 }

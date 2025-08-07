@@ -20,7 +20,9 @@ class PokemonApiClient {
     static func getPokemonDetailResult(url: String) async throws -> Pokemon2? {
         do {
             let (data, _) = try await URLSession.shared.data(from: URL(string: url)!)
-            let res = try JSONDecoder().decode(Pokemon2.self, from: data)
+            let preRes = try JSONDecoder().decode(Pokemon.self, from: data)
+            
+            let res = transformPokemonResult(preRes)
                         
             return res
         } catch (let error) {
