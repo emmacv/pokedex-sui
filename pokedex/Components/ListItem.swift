@@ -10,19 +10,19 @@ import SDWebImageSwiftUI
 
 struct ListItem: View {
     let pokemon: PokemonResultsWithID
-    @Environment(\.colorScheme) var colorScheme
+    let image: String!
     
     init(pokemon: PokemonResultsWithID) {
         self.pokemon = pokemon
-        //        bkgColor = colorScheme == .dark ? Color.white.opacity(0.7) : Color.black.opacity(0.7)
+        image = getImageUrl(for: pokemon.id)
     }
     
     var body: some View {
         ZStack {
-            Card(id: pokemon.id, name: pokemon.name)
+            Card(id: pokemon.id, name: pokemon.name, image: image)
             NavigationLink {
                 PokemonDetailsView(
-                    url: pokemon.url, name: pokemon.name
+                    url: pokemon.url, name: pokemon.name, image: image
                 )
             } label: {
                 EmptyView()
@@ -30,28 +30,26 @@ struct ListItem: View {
         }
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
-        //            NavigationLink {
-        //                PokemonDetailsView(
-        //                    url: pokemon.url, name: pokemon.name
-        //                )
-        //            } label: {
-        //                EmptyView()
-        //            }
     }
 }
 
 struct Card: View {
     let id: Int
     let name: String
+    let image: String
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ZStack {
-            WebImage(url: URL(string: getImageUrl(for: id)))
+            WebImage(url: URL(string: image))
                 .resizable()
                 .scaledToFit()
+                .clipShape(Rectangle())
                 .frame(maxWidth: .infinity, maxHeight: 150)
                 .padding([.leading, .trailing], 20)
-                .background(Color.white)
+                .background(
+                    colorScheme == .dark ? Color.white.opacity(1) : Color.black.opacity(1)
+                )
                 .cornerRadius(16)
             VStack {
                 Spacer()

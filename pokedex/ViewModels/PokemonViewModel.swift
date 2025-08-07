@@ -12,9 +12,6 @@ class PokemonViewModel: ObservableObject {
 
         do {
             let result = try await PokemonApiClient.getPokemonDetailResult(url: url)
-            
-            print(result != nil ? "Successfully loaded pokemon details" : "Failed to load pokemon details")
-            
             if result != nil {
                 self.result = result
             }

@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct PokemonDetailsView: View {
     @StateObject var viewModel: PokemonViewModel = .init()
     let url: String
     let name: String
     let title: String!
+    let image: String
     
-    init(url: String, name: String) {
+    init(url: String, name: String, image: String) {
         self.name = name
         self.url = url
+        self.image = image
         
         let splittedName = name.split(separator: "")
         let (firsLetter, rest) = (splittedName[0].capitalized, splittedName[1...].joined())
@@ -23,11 +26,31 @@ struct PokemonDetailsView: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack(alignment: .center) {
             if viewModel.isLoading {
-                ProgressView("Loading")
+                ProgressView("Loading").tint(Color(UIColor.systemBackground))
+            } else if viewModel.errorMessage != nil {
+                Text(viewModel.errorMessage!)
             } else {
-                Text(viewModel.result?.name ?? "")
+                VStack(alignment: .center) {
+                    ZStack {
+                        Image("pokeball")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 250, height: 250)
+                            .clipShape(Circle())
+                        WebImage(url: URL(string: image))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: 250, maxHeight: 250)
+                    }
+                    Text("\(viewModel.result.map(\.id) ?? 0) - \(title)")
+                        .bold()
+                        .font(.title2)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle(title)
@@ -35,6 +58,7 @@ struct PokemonDetailsView: View {
         .background(Color.red)
         .task {
             await viewModel.fetchPokemonDetails(url: url)
+            print("\(viewModel.result?.abilities)")
         }
     }
 }

@@ -31,7 +31,3 @@ struct PokemonList: View {
         .scrollContentBackground(.hidden)
     }
 }
-
-#Preview {
-    PokemonList(pokemonList: [PokemonResults(name: "one", url: "")])
-}

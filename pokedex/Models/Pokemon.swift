@@ -9,6 +9,8 @@ struct Pokemon2: Codable {
     let height: Int
     let id: Int
     let name: String
+    let abilities: [Ability]
+    let stats: [Stat]
 }
 
 // MARK: - Welcome
