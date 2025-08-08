@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
-import Charts
 
 struct PokemonDetailsView: View {
     @StateObject var viewModel: PokemonViewModel = .init()
@@ -64,13 +63,7 @@ struct PokemonDetailsView: View {
                     }
                     VStack(alignment: .leading) {
                         Text("Stats")
-                        Chart {
-                            SectorMark(
-                                angle: .value("$0.stat.name", 8),
-                                innerRadius: .ratio(7),
-                                angularInset: 2
-                            )
-                        }
+                        PokemonChart(stats: viewModel.result?.stats ?? [])
                     }
                     Spacer()
                 }

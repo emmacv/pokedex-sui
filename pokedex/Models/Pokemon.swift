@@ -347,9 +347,12 @@ struct GenerationViii: Codable {
 }
 
 // MARK: - Stat
-struct Stat: Codable {
+struct Stat: Codable, Identifiable {
     let baseStat, effort: Int
     let stat: Species
+    var id: String {
+        stat.name
+    }
 
     enum CodingKeys: String, CodingKey {
         case baseStat = "base_stat"
