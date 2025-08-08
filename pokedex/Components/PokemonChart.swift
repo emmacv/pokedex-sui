@@ -14,10 +14,13 @@ struct PokemonChart: View {
     var body: some View {
         Chart(stats) {
             BarMark (
-                x: .value("Value", $0.baseStat),
-                y: .value("Stat", $0.stat.name)
+                x: .value("Stat", $0.stat.name),
+                y: .value("Value", $0.baseStat)
             )
             .foregroundStyle(by: .value("stats", $0.stat.name))
         }
+        .padding(12)
+        .background(Color.black.opacity(0.8))
+        .padding()
     }
 }

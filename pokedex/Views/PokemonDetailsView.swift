@@ -32,42 +32,44 @@ struct PokemonDetailsView: View {
             } else if viewModel.errorMessage != nil {
                 Text(viewModel.errorMessage!)
             } else {
-                VStack(alignment: .center, spacing: 16) {
-                    ZStack {
-                        Image("pokeball")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 250, height: 250)
-                            .clipShape(Circle())
-                        WebImage(url: URL(string: image))
-                            .resizable()
-                            .scaledToFill()
-                            .frame(maxWidth: 250, maxHeight: 250)
-                    }
-                    Text("\(viewModel.result.map(\.id) ?? 0) - \(title)")
-                        .bold()
-                        .font(.title2)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    VStack(alignment: .leading) {
-                        Text("Sprites")
-                        ScrollView(.horizontal) {
-                            HStack(spacing: 16) {
-                                ForEach(viewModel.result?.sprites ?? [], id: \.self) {
-                                    WebImage(url: URL(string: $0))
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(maxWidth: 128, maxHeight: 128)
+                ScrollView {
+                    VStack(alignment: .center, spacing: 16) {
+                        ZStack {
+                            Image("pokeball")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 250, height: 250)
+                                .clipShape(Circle())
+                            WebImage(url: URL(string: image))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxWidth: 250, maxHeight: 250)
+                        }
+                        Text("\(viewModel.result.map(\.id) ?? 0) - \(title)")
+                            .bold()
+                            .font(.title2)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        VStack(alignment: .leading) {
+                            Text("Sprites")
+                            ScrollView(.horizontal) {
+                                HStack(spacing: 16) {
+                                    ForEach(viewModel.result?.sprites ?? [], id: \.self) {
+                                        WebImage(url: URL(string: $0))
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(maxWidth: 128, maxHeight: 128)
+                                    }
                                 }
                             }
                         }
+                        VStack(alignment: .leading) {
+                            Text("Stats")
+                            PokemonChart(stats: viewModel.result?.stats ?? [])
+                        }
+                        Spacer()
                     }
-                    VStack(alignment: .leading) {
-                        Text("Stats")
-                        PokemonChart(stats: viewModel.result?.stats ?? [])
-                    }
-                    Spacer()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .navigationTitle(title)
@@ -75,7 +77,6 @@ struct PokemonDetailsView: View {
         .background(Color.red)
         .task {
             await viewModel.fetchPokemonDetails(url: url)
-            print(viewModel.result?.stats[0].baseStat ?? 0)
         }
     }
 }
